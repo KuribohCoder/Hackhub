@@ -1,14 +1,21 @@
 package it.unicam.cs.ids.hackhub.presentation.controllers;
 
+import java.net.URI;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import it.unicam.cs.ids.hackhub.application.abstraction.services.ITeamService;
 import it.unicam.cs.ids.hackhub.application.dto.mapper.TeamMapper;
 import it.unicam.cs.ids.hackhub.application.dto.request.CreateTeamRequest;
 import it.unicam.cs.ids.hackhub.application.dto.response.TeamResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Team;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/api/teams")
@@ -34,7 +41,7 @@ public class TeamController {
         teamService.deleteTeam(id, requestingUserId);
         return ResponseEntity.noContent().build();
     }
-/ex
+//example
     @DeleteMapping("/{id}/members/{userId}")
     public void removeMember() {
     }
