@@ -74,4 +74,8 @@ public class TeamService implements ITeamService {
         team.removeMember(user);
         teamRepository.save(team);
     }
+
+    @Override
+    public void leaveTeam(Long userId, Long teamId) {
+    }
 }

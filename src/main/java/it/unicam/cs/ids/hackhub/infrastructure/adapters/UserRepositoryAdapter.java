@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public class UserRepositoryAdapter implements IUserRepository {
+
     private final UserJpaRepository jpaRepository;
 
     public UserRepositoryAdapter(UserJpaRepository jpaRepository) {
@@ -26,7 +27,17 @@ public class UserRepositoryAdapter implements IUserRepository {
     }
 
     @Override
+    public Optional<User> findByUsername(String username) {
+        return jpaRepository.findByUsername(username);
+    }
+
+    @Override
     public User save(User user) {
         return jpaRepository.save(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jpaRepository.deleteById(id);
     }
 }

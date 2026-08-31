@@ -20,14 +20,11 @@ public class InvitationService implements IInvitationService {
 
     private final IInvitationRepository invitationRepository;
     private final IUserRepository       userRepository;
-    private final ITeamRepository       teamRepository;
 
     public InvitationService(IInvitationRepository invitationRepository,
-                             IUserRepository userRepository,
-                             ITeamRepository teamRepository) {
+                             IUserRepository userRepository) {
         this.invitationRepository = invitationRepository;
         this.userRepository       = userRepository;
-        this.teamRepository       = teamRepository;
     }
 
     @Override

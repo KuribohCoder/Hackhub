@@ -24,6 +24,15 @@ public class Hackathon {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String rules;
+
+    @Column(length = 150)
+    private String location;
+
+    @Column(name = "prize_amount")
+    private Double prizeAmount;
+
     @Column(name = "registration_deadline", nullable = false)
     private LocalDateTime registrationDeadline;
 
@@ -43,6 +52,10 @@ public class Hackathon {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organizer_user_id", nullable = false)
     private User organizerUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "judge_user_id")
+    private User judgeUser;
 
     @ManyToMany
     @JoinTable(
@@ -110,12 +123,16 @@ public class Hackathon {
     public Long getId()                             { return id; }
     public String getTitle()                        { return title; }
     public String getDescription()                  { return description; }
+    public String getRules()                        { return rules; }
+    public String getLocation()                     { return location; }
+    public Double getPrizeAmount()                  { return prizeAmount; }
     public LocalDateTime getRegistrationDeadline()  { return registrationDeadline; }
     public LocalDateTime getStartDate()             { return startDate; }
     public LocalDateTime getEndDate()               { return endDate; }
     public Integer getMaxTeamMembers()              { return maxTeamMembers; }
     public HackathonStatus getStatus()              { return status; }
     public User getOrganizerUser()                  { return organizerUser; }
+    public User getJudgeUser()                      { return judgeUser; }
     public Team getWinningTeam()                    { return winningTeam; }
     public HackathonState getCurrentState()          { return currentState; }
 
@@ -126,6 +143,13 @@ public class Hackathon {
     public List<User> getMentors() {
         return Collections.unmodifiableList(mentors);
     }
+
+    public void setTitle(String title)              { this.title = title; }
+    public void setDescription(String description)  { this.description = description; }
+    public void setRules(String rules)              { this.rules = rules; }
+    public void setLocation(String location)        { this.location = location; }
+    public void setPrizeAmount(Double prizeAmount)  { this.prizeAmount = prizeAmount; }
+    public void setJudgeUser(User judgeUser)        { this.judgeUser = judgeUser; }
 
     public void setStatus(HackathonStatus status) {
         this.status       = status;

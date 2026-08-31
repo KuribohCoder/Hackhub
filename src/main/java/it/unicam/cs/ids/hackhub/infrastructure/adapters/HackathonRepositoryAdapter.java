@@ -5,10 +5,12 @@ import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
 import it.unicam.cs.ids.hackhub.infrastructure.repositories.HackathonJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class HackathonRepositoryAdapter implements IHackathonRepository {
+
     private final HackathonJpaRepository jpaRepository;
 
     public HackathonRepositoryAdapter(HackathonJpaRepository jpaRepository) {
@@ -18,6 +20,16 @@ public class HackathonRepositoryAdapter implements IHackathonRepository {
     @Override
     public Optional<Hackathon> findById(Long id) {
         return jpaRepository.findById(id);
+    }
+
+    @Override
+    public List<Hackathon> findAll() {
+        return jpaRepository.findAll();
+    }
+
+    @Override
+    public List<Hackathon> findByStaffMemberId(Long userId) {
+        return jpaRepository.findByStaffMemberId(userId);
     }
 
     @Override

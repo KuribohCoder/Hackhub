@@ -9,6 +9,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class HackathonService implements IHackathonService {
@@ -38,5 +40,24 @@ public class HackathonService implements IHackathonService {
 
     @Override
     public void unregisterTeamFromHackathon(Long userId, Long hackathonId) {
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Hackathon> getAllHackathons() {
+        return hackathonRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Hackathon getHackathonById(Long id) {
+        return hackathonRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Hackathon non trovato con id: " + id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Hackathon> getAllMyHackathons(Long userId) {
+        return List.of();
     }
 }
