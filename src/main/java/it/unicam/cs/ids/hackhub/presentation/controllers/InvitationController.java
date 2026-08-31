@@ -3,6 +3,7 @@ package it.unicam.cs.ids.hackhub.presentation.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,12 +30,17 @@ public class InvitationController {
     }
 
     @PostMapping
-    public void sendInvitation(
+    public ResponseEntity<InvitationResponse> sendInvitation(
             @RequestBody SendInvitationRequest request) {
+        Invitation invitation = invitationService.sendInvitation(request.senderUserId(), request.targetUserId());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(InvitationMapper.toResponse(invitation));
     }
 
     @PatchMapping("/{id}/reject")
-    public void rejectInvitation(@PathVariable Long id) {
+    public ResponseEntity<Void> rejectInvitation(@PathVariable Long id) {
+        invitationService.rejectInvitation(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/user/{userId}")
