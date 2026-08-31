@@ -23,8 +23,9 @@ public class HackathonController {
     }
 
     @DeleteMapping("/{id}/registrations")
-    public void unregisterTeam(
+    public ResponseEntity<Void> unregisterTeam(
             @PathVariable Long id,
             @RequestParam Long userId) {
+        hackathonService.unregisterTeamFromHackathon(userId, id);
+        return ResponseEntity.noContent().build();
     }
-}
