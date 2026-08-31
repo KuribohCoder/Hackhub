@@ -37,14 +37,7 @@ public class HackathonService implements IHackathonService {
         hackathon.registerTeam(team);
         hackathonRepository.save(hackathon);
     }
-    
-    
-    @Transactional(readOnly = true)
-    public List<Hackathon> getAllMyHackathons(Long userId) {
-        return hackathonRepository.findByStaffUserId(userId);
-    }
-    
-    // commit
+
     @Override
     public void unregisterTeamFromHackathon(Long userId, Long hackathonId) {
         Team team = teamRepository.findTeamByUserId(userId)
@@ -59,5 +52,22 @@ public class HackathonService implements IHackathonService {
         hackathonRepository.save(hackathon);
     }
 
-}
+    @Override
+    @Transactional(readOnly = true)
+    public List<Hackathon> getAllHackathons() {
+        return hackathonRepository.findAll();
+    }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Hackathon getHackathonById(Long id) {
+        return hackathonRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Hackathon non trovato con id: " + id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Hackathon> getAllMyHackathons(Long userId) {
+        return hackathonRepository.findByStaffMemberId(userId);
+    }
+}
