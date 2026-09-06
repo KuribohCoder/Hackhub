@@ -1,9 +1,9 @@
 package it.unicam.cs.ids.hackhub.application.abstraction.repositories;
 
-import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
-
 import java.util.List;
 import java.util.Optional;
+
+import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
 
 public interface IHackathonRepository {
 
@@ -14,4 +14,6 @@ public interface IHackathonRepository {
     List<Hackathon> findByStaffMemberId(Long userId);
 
     Hackathon save(Hackathon hackathon);
+
+    void delete(Hackathon hackathon);
 }

@@ -1,7 +1,11 @@
 package it.unicam.cs.ids.hackhub.application.services;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import it.unicam.cs.ids.hackhub.application.abstraction.repositories.IInvitationRepository;
-import it.unicam.cs.ids.hackhub.application.abstraction.repositories.ITeamRepository;
 import it.unicam.cs.ids.hackhub.application.abstraction.repositories.IUserRepository;
 import it.unicam.cs.ids.hackhub.application.abstraction.services.IInvitationService;
 import it.unicam.cs.ids.hackhub.domain.enums.InvitationStatus;
@@ -9,10 +13,6 @@ import it.unicam.cs.ids.hackhub.domain.enums.Role;
 import it.unicam.cs.ids.hackhub.domain.model.Invitation;
 import it.unicam.cs.ids.hackhub.domain.model.User;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional

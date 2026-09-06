@@ -11,6 +11,7 @@ public interface HackathonState {
             case IN_PROGRESS       -> new InProgressState();
             case UNDER_EVALUATION  -> new UnderEvaluationState();
             case CONCLUDED         -> new ConcludedState();
+            default -> throw new IllegalArgumentException("Unexpected value: " + status);
         };
     }
 }

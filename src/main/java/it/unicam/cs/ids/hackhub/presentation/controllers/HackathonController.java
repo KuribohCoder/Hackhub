@@ -56,4 +56,26 @@ public class HackathonController {
     @GetMapping("/staff/{userId}")
     public void getAllMyHackathons(@PathVariable Long userId) {
     }
+
+    @PostMapping("/{id}/mentors")
+    public ResponseEntity<Void> addMentor(
+            @PathVariable Long id,
+            @RequestParam Long userId) {
+        hackathonService.addMentor(id, userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<Void> cancelHackathon(@PathVariable Long id) {
+        hackathonService.cancelHackathon(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHackathon(
+            @PathVariable Long id,
+            @RequestParam Long requestingUserId) {
+        hackathonService.deleteHackathon(id, requestingUserId);
+        return ResponseEntity.noContent().build();
+    }
 }

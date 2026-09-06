@@ -1,12 +1,13 @@
 package it.unicam.cs.ids.hackhub.infrastructure.adapters;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Repository;
+
 import it.unicam.cs.ids.hackhub.application.abstraction.repositories.IHackathonRepository;
 import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
 import it.unicam.cs.ids.hackhub.infrastructure.repositories.HackathonJpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class HackathonRepositoryAdapter implements IHackathonRepository {
@@ -35,5 +36,10 @@ public class HackathonRepositoryAdapter implements IHackathonRepository {
     @Override
     public Hackathon save(Hackathon hackathon) {
         return jpaRepository.save(hackathon);
+    }
+
+    @Override
+    public void delete(Hackathon hackathon) {
+        jpaRepository.delete(hackathon);
     }
 }

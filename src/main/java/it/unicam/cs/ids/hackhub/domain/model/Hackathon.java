@@ -1,18 +1,32 @@
 package it.unicam.cs.ids.hackhub.domain.model;
 
-import it.unicam.cs.ids.hackhub.domain.enums.HackathonStatus;
-import it.unicam.cs.ids.hackhub.domain.state.HackathonState;
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import it.unicam.cs.ids.hackhub.domain.enums.HackathonStatus;
+import it.unicam.cs.ids.hackhub.domain.state.HackathonState;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
 @Entity
 @Table(name = "hackathon")
-public class Hackathon {
+public final class Hackathon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -175,5 +189,18 @@ public class Hackathon {
     @Override
     public String toString() {
         return "Hackathon{id=%d, title='%s', status=%s}".formatted(id, title, status);
+    }
+
+    public void addMentor(User user) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'addMentor'");
+    }
+
+    public void setRegisteredTeams(List<Team> registeredTeams) {
+        this.registeredTeams = registeredTeams;
+    }
+
+    public void setMentors(List<User> mentors) {
+        this.mentors = mentors;
     }
 }
