@@ -51,8 +51,10 @@ public class TeamController {
     }
 
     @PostMapping("/{id}/leave")
-    public void leaveTeam(
+    public ResponseEntity<Void> leaveTeam(
             @PathVariable Long id,
             @RequestParam Long userId) {
+        teamService.leaveTeam(userId, id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,15 +1,24 @@
 package it.unicam.cs.ids.hackhub.presentation.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import it.unicam.cs.ids.hackhub.application.abstraction.services.IHackathonService;
 import it.unicam.cs.ids.hackhub.application.dto.mapper.HackathonMapper;
 import it.unicam.cs.ids.hackhub.application.dto.request.RegisterTeamRequest;
 import it.unicam.cs.ids.hackhub.application.dto.response.HackathonResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/hackathons")
@@ -54,7 +63,13 @@ public class HackathonController {
     }
 
     @GetMapping("/staff/{userId}")
-    public void getAllMyHackathons(@PathVariable Long userId) {
+    public ResponseEntity<List<HackathonResponse>> getAllMyHackathons(@PathVariable Long userId) {
+        List<Hackathon> list = hackathonService.getAllMyHackathons(userId);
+        List<HackathonResponse> responses = new ArrayList<>(list.size());
+        for (Hackathon h : list) {
+            responses.add(HackathonMapper.toResponse(h));
+        }
+        return ResponseEntity.ok(responses);
     }
 
     @PostMapping("/{id}/mentors")

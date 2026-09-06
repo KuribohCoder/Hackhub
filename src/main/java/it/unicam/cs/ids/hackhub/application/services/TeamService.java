@@ -1,5 +1,8 @@
 package it.unicam.cs.ids.hackhub.application.services;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import it.unicam.cs.ids.hackhub.application.abstraction.repositories.ITeamRepository;
 import it.unicam.cs.ids.hackhub.application.abstraction.repositories.IUserRepository;
 import it.unicam.cs.ids.hackhub.application.abstraction.services.ITeamService;
@@ -7,8 +10,6 @@ import it.unicam.cs.ids.hackhub.domain.enums.Role;
 import it.unicam.cs.ids.hackhub.domain.model.Team;
 import it.unicam.cs.ids.hackhub.domain.model.User;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -77,5 +78,28 @@ public class TeamService implements ITeamService {
 
     @Override
     public void leaveTeam(Long userId, Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Team non trovato con id: " + teamId));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Utente non trovato con id: " + userId));
+
+        if (user.getTeam() == null || !user.getTeam().getId().equals(teamId)) {
+            throw new IllegalArgumentException(
+                    "L'utente con id " + userId + " non è membro del team " + teamId + ".");
+        }
+
+        if (team.getCreatorUser().getId().equals(userId)) {
+            throw new IllegalStateException(
+                    "Il creatore del team non può abbandonarlo; deve eliminarlo.");
+        }
+
+        team.removeMember(user);
+        user.setRole(Role.GENERIC_USER);
+
+        teamRepository.save(team);
+        userRepository.save(user);
     }
 }

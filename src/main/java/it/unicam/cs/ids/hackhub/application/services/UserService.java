@@ -1,13 +1,14 @@
 package it.unicam.cs.ids.hackhub.application.services;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import it.unicam.cs.ids.hackhub.application.abstraction.repositories.IUserRepository;
 import it.unicam.cs.ids.hackhub.application.abstraction.services.IUserService;
 import it.unicam.cs.ids.hackhub.application.dto.request.RegisterUserRequest;
 import it.unicam.cs.ids.hackhub.application.dto.request.UpdateProfileRequest;
 import it.unicam.cs.ids.hackhub.domain.model.User;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -59,12 +60,46 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void logout(Long userId) {
+    public void logout(Long userId){
+        if (userId == null) {
+            throw new IllegalArgumentException("L'ID utente non può essere null.");
+        }
+        userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con id: " + userId));
     }
 
     @Override
     public User updateProfile(Long userId, UpdateProfileRequest request) {
-        return null;
+        if (userId == null) {
+            throw new IllegalArgumentException("L'ID utente non può essere null.");
+        }
+        if (request == null) {
+            throw new IllegalArgumentException("I dati di aggiornamento non possono essere nulli.");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con id: " + userId));
+
+        if (request.name() != null) {
+            user.setName(request.name());
+        }
+        if (request.surname() != null) {
+            user.setSurname(request.surname());
+        }
+        if (request.phone() != null) {
+            user.setPhone(request.phone());
+        }
+        if (request.birthDate() != null) {
+            user.setBirthDate(request.birthDate());
+        }
+        if (request.gender() != null) {
+            user.setGender(request.gender());
+        }
+        if (request.iban() != null) {
+            user.setIban(request.iban());
+        }
+
+        return userRepository.save(user);
     }
 
     @Override
