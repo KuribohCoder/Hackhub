@@ -9,6 +9,8 @@ import it.unicam.cs.ids.hackhub.application.abstraction.repositories.IHackathonR
 import it.unicam.cs.ids.hackhub.application.abstraction.repositories.ITeamRepository;
 import it.unicam.cs.ids.hackhub.application.abstraction.repositories.IUserRepository;
 import it.unicam.cs.ids.hackhub.application.abstraction.services.IHackathonService;
+import it.unicam.cs.ids.hackhub.application.dto.request.CreateHackathonRequest;
+import it.unicam.cs.ids.hackhub.domain.builder.HackathonBuilder;
 import it.unicam.cs.ids.hackhub.domain.enums.HackathonStatus;
 import it.unicam.cs.ids.hackhub.domain.enums.Role;
 import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
@@ -29,6 +31,45 @@ public class HackathonService implements IHackathonService {
         this.hackathonRepository = hackathonRepository;
         this.teamRepository = teamRepository;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public Hackathon createHackathon(CreateHackathonRequest request) {
+        User organizer = userRepository.findById(request.organizerUserId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Organizzatore non trovato con id: " + request.organizerUserId()));
+
+        if (organizer.getRole() != Role.ORGANIZER) {
+            throw new IllegalStateException(
+                    "L'utente con id " + request.organizerUserId() + " non ha il ruolo di ORGANIZER.");
+        }
+
+        User judge = null;
+        if (request.judgeUserId() != null) {
+            judge = userRepository.findById(request.judgeUserId())
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Giudice non trovato con id: " + request.judgeUserId()));
+            if (judge.getRole() != Role.JUDGE) {
+                throw new IllegalStateException(
+                        "L'utente con id " + request.judgeUserId() + " non ha il ruolo di JUDGE.");
+            }
+        }
+
+        Hackathon hackathon = new HackathonBuilder()
+                .withTitle(request.title())
+                .withDescription(request.description())
+                .withRules(request.rules())
+                .withLocation(request.location())
+                .withPrizeAmount(request.prizeAmount())
+                .withRegistrationDeadline(request.registrationDeadline())
+                .withStartDate(request.startDate())
+                .withEndDate(request.endDate())
+                .withMaxTeamMembers(request.maxTeamMembers())
+                .withOrganizer(organizer)
+                .withJudge(judge)
+                .build();
+
+        return hackathonRepository.save(hackathon);
     }
 
     @Override

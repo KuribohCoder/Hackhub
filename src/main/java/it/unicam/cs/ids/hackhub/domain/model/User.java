@@ -12,9 +12,7 @@ import java.util.Objects;
  * Contiene i dati anagrafici, credenziali, ruolo attivo nel sistema e eventuale team di appartenenza.
  */
 @Entity
-@Table(name = "user")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "users")
 public class User {
 
     @Id

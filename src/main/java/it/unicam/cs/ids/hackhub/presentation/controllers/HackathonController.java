@@ -3,6 +3,7 @@ package it.unicam.cs.ids.hackhub.presentation.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.unicam.cs.ids.hackhub.application.abstraction.services.IHackathonService;
 import it.unicam.cs.ids.hackhub.application.dto.mapper.HackathonMapper;
+import it.unicam.cs.ids.hackhub.application.dto.request.CreateHackathonRequest;
 import it.unicam.cs.ids.hackhub.application.dto.request.RegisterTeamRequest;
 import it.unicam.cs.ids.hackhub.application.dto.response.HackathonResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
 
 /**
- * Controller per la gestione degli hackathon, iscrizione/disiscrizione team e staff.
+ * Controller per la gestione degli hackathon, creazione, iscrizione/disiscrizione team e staff.
  */
 @RestController
 @RequestMapping("/api/hackathons")
@@ -31,6 +33,18 @@ public class HackathonController {
 
     public HackathonController(IHackathonService hackathonService) {
         this.hackathonService = hackathonService;
+    }
+
+    /**
+     * Crea un nuovo hackathon.
+     *
+     * @param request DTO contenente i dati di configurazione dell'hackathon
+     * @return 201 Created con l'HackathonResponse creato
+     */
+    @PostMapping
+    public ResponseEntity<HackathonResponse> createHackathon(@RequestBody CreateHackathonRequest request) {
+        Hackathon created = hackathonService.createHackathon(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(HackathonMapper.toResponse(created));
     }
 
     /**

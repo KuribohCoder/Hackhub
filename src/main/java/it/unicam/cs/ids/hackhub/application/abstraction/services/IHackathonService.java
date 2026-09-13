@@ -2,6 +2,7 @@ package it.unicam.cs.ids.hackhub.application.abstraction.services;
 
 import java.util.List;
 
+import it.unicam.cs.ids.hackhub.application.dto.request.CreateHackathonRequest;
 import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
 
 /**
@@ -9,6 +10,14 @@ import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
  * delle iscrizioni dei team e dell'assegnazione dello staff.
  */
 public interface IHackathonService {
+
+    /**
+     * Crea un nuovo hackathon validando i parametri e utilizzando il Builder Pattern.
+     *
+     * @param request i dati di creazione dell'hackathon
+     * @return l'entità Hackathon creata e salvata
+     */
+    Hackathon createHackathon(CreateHackathonRequest request);
 
     /**
      * Iscrive il team di appartenenza dell'utente all'hackathon specificato.
