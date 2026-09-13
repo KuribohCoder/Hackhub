@@ -17,6 +17,9 @@ import it.unicam.cs.ids.hackhub.application.dto.request.CreateTeamRequest;
 import it.unicam.cs.ids.hackhub.application.dto.response.TeamResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Team;
 
+/**
+ * Controller per la creazione, gestione dei membri e scioglimento dei team.
+ */
 @RestController
 @RequestMapping("/api/teams")
 public class TeamController {
@@ -27,6 +30,12 @@ public class TeamController {
         this.teamService = teamService;
     }
 
+    /**
+     * Crea un nuovo team assegnando l'utente specificato come creatore.
+     *
+     * @param request DTO con nome del team e ID dell'utente creatore
+     * @return 201 Created con URI del team e DTO di risposta
+     */
     @PostMapping
     public ResponseEntity<TeamResponse> createTeam(@RequestBody CreateTeamRequest request) {
         Team team = teamService.createTeam(request.teamName(), request.userId());
@@ -34,6 +43,13 @@ public class TeamController {
                 .body(TeamMapper.toResponse(team));
     }
 
+    /**
+     * Elimina un team su richiesta del creatore.
+     *
+     * @param id ID del team
+     * @param requestingUserId ID dell'utente creatore richiedente
+     * @return 204 No Content
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(
             @PathVariable Long id,
@@ -42,6 +58,13 @@ public class TeamController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Rimuove un membro dal team.
+     *
+     * @param id ID del team
+     * @param userId ID del membro da rimuovere
+     * @return 204 No Content
+     */
     @DeleteMapping("/{id}/members/{userId}")
     public ResponseEntity<Void> removeMember(
             @PathVariable Long id,
@@ -50,6 +73,13 @@ public class TeamController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Permette a un membro di lasciare volontariamente il team.
+     *
+     * @param id ID del team
+     * @param userId ID dell'utente che abbandona
+     * @return 204 No Content
+     */
     @PostMapping("/{id}/leave")
     public ResponseEntity<Void> leaveTeam(
             @PathVariable Long id,

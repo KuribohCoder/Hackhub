@@ -14,6 +14,9 @@ import it.unicam.cs.ids.hackhub.application.dto.mapper.ReportMapper;
 import it.unicam.cs.ids.hackhub.application.dto.response.ReportResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Report;
 
+/**
+ * Controller per la consultazione delle segnalazioni/report inviati durante gli hackathon.
+ */
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
@@ -24,6 +27,12 @@ public class ReportController {
         this.reportService = reportService;
     }
 
+    /**
+     * Recupera tutte le segnalazioni pervenute per uno specifico hackathon.
+     *
+     * @param hackathonId ID dell'hackathon
+     * @return 200 OK con lista di DTO delle segnalazioni
+     */
     @GetMapping("/hackathon/{hackathonId}")
     public ResponseEntity<List<ReportResponse>> getReportsByHackathon(
             @PathVariable Long hackathonId) {

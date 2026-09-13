@@ -17,6 +17,9 @@ import it.unicam.cs.ids.hackhub.application.dto.request.UpdateSubmissionRequest;
 import it.unicam.cs.ids.hackhub.application.dto.response.SubmissionResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Submission;
 
+/**
+ * Controller per l'aggiornamento e la consultazione delle sottomissioni dei progetti.
+ */
 @RestController
 @RequestMapping("/api/submissions")
 public class SubmissionController {
@@ -27,6 +30,13 @@ public class SubmissionController {
         this.submissionService = submissionService;
     }
 
+    /**
+     * Aggiorna una sottomissione (URL repository e descrizione) durante la fase attiva dell'hackathon.
+     *
+     * @param id ID della sottomissione
+     * @param request DTO con i dati aggiornati
+     * @return 200 OK con DTO della sottomissione aggiornata
+     */
     @PutMapping("/{id}")
     public ResponseEntity<SubmissionResponse> updateSubmission(
             @PathVariable Long id,
@@ -35,6 +45,12 @@ public class SubmissionController {
         return ResponseEntity.ok(SubmissionMapper.toResponse(submission));
     }
 
+    /**
+     * Recupera tutte le sottomissioni associate a uno specifico hackathon.
+     *
+     * @param hackathonId ID dell'hackathon
+     * @return 200 OK con lista di DTO delle sottomissioni
+     */
     @GetMapping("/hackathon/{hackathonId}")
     public ResponseEntity<List<SubmissionResponse>> getSubmissionsByHackathon(
             @PathVariable Long hackathonId) {

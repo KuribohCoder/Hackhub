@@ -14,6 +14,9 @@ import it.unicam.cs.ids.hackhub.application.dto.mapper.EvaluationMapper;
 import it.unicam.cs.ids.hackhub.application.dto.response.EvaluationResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Evaluation;
 
+/**
+ * Controller per la consultazione delle valutazioni effettuate dai giudici.
+ */
 @RestController
 @RequestMapping("/api/evaluations")
 public class EvaluationController {
@@ -24,6 +27,12 @@ public class EvaluationController {
         this.evaluationService = evaluationService;
     }
 
+    /**
+     * Recupera tutte le valutazioni inserite da uno specifico giudice.
+     *
+     * @param judgeId ID del giudice
+     * @return 200 OK con lista di DTO delle valutazioni
+     */
     @GetMapping("/judge/{judgeId}")
     public ResponseEntity<List<EvaluationResponse>> getEvaluationsByJudge(
             @PathVariable Long judgeId) {

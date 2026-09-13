@@ -6,6 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * Entità che rappresenta la valutazione numerica e il feedback qualitativo assegnati da un giudice a una sottomissione.
+ */
 @Entity
 @Table(name = "evaluations")
 public class Evaluation {

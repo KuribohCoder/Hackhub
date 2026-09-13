@@ -7,6 +7,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Entità che rappresenta un utente registrato nella piattaforma Hackhub.
+ * Contiene i dati anagrafici, credenziali, ruolo attivo nel sistema e eventuale team di appartenenza.
+ */
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

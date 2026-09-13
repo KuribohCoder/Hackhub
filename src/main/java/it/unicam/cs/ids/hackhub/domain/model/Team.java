@@ -9,6 +9,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Entità aggregata che rappresenta una squadra di partecipanti (Team).
+ * Traccia il creatore, i membri componenti e il vincolo di appartenenza.
+ */
 @Entity
 @Table(name = "team")
 public class Team {

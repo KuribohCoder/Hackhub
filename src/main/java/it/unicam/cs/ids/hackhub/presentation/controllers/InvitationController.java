@@ -19,6 +19,9 @@ import it.unicam.cs.ids.hackhub.application.dto.request.SendInvitationRequest;
 import it.unicam.cs.ids.hackhub.application.dto.response.InvitationResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Invitation;
 
+/**
+ * Controller per l'invio, il rifiuto e la consultazione degli inviti ai team.
+ */
 @RestController
 @RequestMapping("/api/invitations")
 public class InvitationController {
@@ -29,6 +32,12 @@ public class InvitationController {
         this.invitationService = invitationService;
     }
 
+    /**
+     * Invia un invito a partecipare a un team a un altro utente.
+     *
+     * @param request DTO con ID utente mittente e ID utente destinatario
+     * @return 201 Created con DTO dell'invito
+     */
     @PostMapping
     public ResponseEntity<InvitationResponse> sendInvitation(
             @RequestBody SendInvitationRequest request) {
@@ -37,12 +46,24 @@ public class InvitationController {
                 .body(InvitationMapper.toResponse(invitation));
     }
 
+    /**
+     * Rifiuta un invito ricevuto.
+     *
+     * @param id ID dell'invito da rifiutare
+     * @return 204 No Content
+     */
     @PatchMapping("/{id}/reject")
     public ResponseEntity<Void> rejectInvitation(@PathVariable Long id) {
         invitationService.rejectInvitation(id);
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Recupera tutti gli inviti indirizzati a uno specifico utente.
+     *
+     * @param userId ID dell'utente
+     * @return 200 OK con lista di DTO degli inviti
+     */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<InvitationResponse>> getUserInvitations(@PathVariable Long userId) {
         List<Invitation> invitations = invitationService.getUserInvitations(userId);

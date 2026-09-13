@@ -24,6 +24,11 @@ import jakarta.persistence.PostLoad;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
+/**
+ * Entità aggregata radice che rappresenta un evento Hackathon.
+ * Gestisce le informazioni dell'evento, le iscrizioni dei team attraverso lo State Pattern
+ * e le associazioni con lo staff (organizzatore, giudice, mentori).
+ */
 @Entity
 @Table(name = "hackathon")
 public final class Hackathon {
@@ -116,10 +121,20 @@ public final class Hackathon {
         this.currentState = HackathonState.fromStatus(this.status);
     }
 
+    /**
+     * Esegue l'iscrizione di un team all'hackathon delegando al currentState (State Pattern).
+     *
+     * @param team il team da iscrivere
+     */
     public void registerTeam(Team team) {
         currentState.registerTeam(this, team);
     }
 
+    /**
+     * Esegue la cancellazione dell'iscrizione di un team delegando al currentState (State Pattern).
+     *
+     * @param team il team da disiscrivere
+     */
     public void unregisterTeam(Team team) {
         currentState.unregisterTeam(this, team);
     }
@@ -144,9 +159,9 @@ public final class Hackathon {
     public LocalDateTime getStartDate()             { return startDate; }
     public LocalDateTime getEndDate()               { return endDate; }
     public Integer getMaxTeamMembers()              { return maxTeamMembers; }
-    public HackathonStatus getStatus()              { return status; }
     public User getOrganizerUser()                  { return organizerUser; }
     public User getJudgeUser()                      { return judgeUser; }
+    public HackathonStatus getStatus()              { return status; }
     public Team getWinningTeam()                    { return winningTeam; }
     public HackathonState getCurrentState()          { return currentState; }
 
@@ -165,6 +180,11 @@ public final class Hackathon {
     public void setPrizeAmount(Double prizeAmount)  { this.prizeAmount = prizeAmount; }
     public void setJudgeUser(User judgeUser)        { this.judgeUser = judgeUser; }
 
+    /**
+     * Imposta lo stato dell'hackathon e aggiorna contestualmente l'istanza dello State Pattern.
+     *
+     * @param status il nuovo HackathonStatus
+     */
     public void setStatus(HackathonStatus status) {
         this.status       = status;
         this.currentState = HackathonState.fromStatus(status);
@@ -191,9 +211,15 @@ public final class Hackathon {
         return "Hackathon{id=%d, title='%s', status=%s}".formatted(id, title, status);
     }
 
+    /**
+     * Aggiunge un mentore allo staff dell'hackathon se non già presente.
+     *
+     * @param user l'utente mentore da assegnare
+     */
     public void addMentor(User user) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'addMentor'");
+        if (user != null && !mentors.contains(user)) {
+            this.mentors.add(user);
+        }
     }
 
     public void setRegisteredTeams(List<Team> registeredTeams) {

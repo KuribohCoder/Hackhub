@@ -20,6 +20,9 @@ import it.unicam.cs.ids.hackhub.application.dto.request.RegisterTeamRequest;
 import it.unicam.cs.ids.hackhub.application.dto.response.HackathonResponse;
 import it.unicam.cs.ids.hackhub.domain.model.Hackathon;
 
+/**
+ * Controller per la gestione degli hackathon, iscrizione/disiscrizione team e staff.
+ */
 @RestController
 @RequestMapping("/api/hackathons")
 public class HackathonController {
@@ -30,6 +33,13 @@ public class HackathonController {
         this.hackathonService = hackathonService;
     }
 
+    /**
+     * Registra un team a un hackathon.
+     *
+     * @param id ID dell'hackathon
+     * @param request DTO contenente l'ID dell'utente richiedente
+     * @return 204 No Content se l'iscrizione è avvenuta con successo
+     */
     @PostMapping("/{id}/registrations")
     public ResponseEntity<Void> registerTeam(
             @PathVariable Long id,
@@ -38,6 +48,13 @@ public class HackathonController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Annulla l'iscrizione di un team a un hackathon.
+     *
+     * @param id ID dell'hackathon
+     * @param userId ID dell'utente membro del team
+     * @return 204 No Content se la cancellazione è avvenuta con successo
+     */
     @DeleteMapping("/{id}/registrations")
     public ResponseEntity<Void> unregisterTeam(
             @PathVariable Long id,
@@ -46,6 +63,11 @@ public class HackathonController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Restituisce tutti gli hackathon presenti nel sistema.
+     *
+     * @return lista dei DTO di risposta degli hackathon
+     */
     @GetMapping
     public ResponseEntity<List<HackathonResponse>> getAllHackathons() {
         List<Hackathon> list = hackathonService.getAllHackathons();
@@ -56,12 +78,24 @@ public class HackathonController {
         return ResponseEntity.ok(responses);
     }
 
+    /**
+     * Recupera i dettagli di uno specifico hackathon.
+     *
+     * @param id ID dell'hackathon
+     * @return DTO contenente i dettagli dell'hackathon
+     */
     @GetMapping("/{id}")
     public ResponseEntity<HackathonResponse> getHackathonById(@PathVariable Long id) {
         Hackathon hackathon = hackathonService.getHackathonById(id);
         return ResponseEntity.ok(HackathonMapper.toResponse(hackathon));
     }
 
+    /**
+     * Restituisce gli hackathon a cui l'utente partecipa come membro dello staff.
+     *
+     * @param userId ID del membro dello staff
+     * @return lista degli hackathon associati
+     */
     @GetMapping("/staff/{userId}")
     public ResponseEntity<List<HackathonResponse>> getAllMyHackathons(@PathVariable Long userId) {
         List<Hackathon> list = hackathonService.getAllMyHackathons(userId);
@@ -72,6 +106,13 @@ public class HackathonController {
         return ResponseEntity.ok(responses);
     }
 
+    /**
+     * Assegna un mentore all'hackathon.
+     *
+     * @param id ID dell'hackathon
+     * @param userId ID dell'utente con ruolo mentore
+     * @return 204 No Content
+     */
     @PostMapping("/{id}/mentors")
     public ResponseEntity<Void> addMentor(
             @PathVariable Long id,
@@ -80,12 +121,25 @@ public class HackathonController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Annulla un hackathon nello stato REGISTRATION_OPEN.
+     *
+     * @param id ID dell'hackathon
+     * @return 204 No Content
+     */
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<Void> cancelHackathon(@PathVariable Long id) {
         hackathonService.cancelHackathon(id);
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Elimina un hackathon concluso.
+     *
+     * @param id ID dell'hackathon
+     * @param requestingUserId ID dell'organizzatore richiedente
+     * @return 204 No Content
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHackathon(
             @PathVariable Long id,

@@ -9,6 +9,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Entità che rappresenta la sottomissione finale o intermedia di un progetto sviluppato per un hackathon.
+ */
 @Entity
 @Table(name = "submissions")
 public class Submission {
